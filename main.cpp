@@ -6,7 +6,7 @@ int main() {
 
   bool running = true;
 
-  graph* graph = new graph();
+  Graph* graph = new Graph();
 
   while (running) {
 
