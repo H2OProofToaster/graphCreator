@@ -2,7 +2,6 @@
 #define STRUCTS_CPP
 
 #include <iostream>
-#include <ostream>
 #include <vector>
 #include <string>
 
@@ -15,6 +14,7 @@ struct Vertex {
   vector<Edge*> startEdges;
   vector<Edge*> endEdges;
   string label;
+  int distance = NULL;
 
   Vertex(string l) : label(l) {}
 
@@ -86,8 +86,31 @@ struct Graph {
 
     Vertex* v1 = findVertex(label1);
     Vertex* v2 = findVertex(label2);
+    if (v1 == nullptr or v2 == nullptr) { return; }
 
-    //TODO: Dijkstra's Algorithm
+    //Clear previous
+    for (Vertex* i : vertices) { i->distance = NULL; }
+
+    v1->distance = 0;
+    vector<Vertex*> unvisited = vertices;
+    Vertex* curr = v1;
+
+    while (unvisited.size() != 0) {
+
+      //Find curr
+      if (curr == nullptr) {
+
+	curr = unvisited.at(0);
+	for (Vertex* i : unvisited) {
+
+	  if (i->distance != NULL and i->distance < curr) { curr = i; }
+	}
+      }
+
+      //All null check
+      for (Vertex* i : unvisited) {
+
+	if (i->distance != NULL) { break; }
   }
 
   void printAdjacenyTable() {
