@@ -1,4 +1,6 @@
+#include "structs.cpp"
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -68,7 +70,7 @@ int main() {
     }
     else if (action == "FIND PATH" or action == "fp") {
 
-      cout << cout << "What is the first vertex? ";
+      cout << "What is the first vertex? ";
       string vertex1;
       cin >> vertex1;
 
