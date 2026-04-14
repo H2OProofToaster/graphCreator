@@ -82,40 +82,70 @@ struct Graph {
     }
   }
 
-  void findPath(string label1, string label2) {
+  bool unreachable(vertex<Vector*> i) {
+
+    for (Vector* j : i) {
+
+      if (j->distance != NULL) { return false; }
+    }
+
+    return true;
+  }
+
+  Vertex* getCurrent(vertex<Vector*> i) {
+
+    Vertex* curr = i.at(0);
+    for (Vertex* j : i) {
+
+      if (j->distance < curr->distance) { curr = j; }
+    }
+    
+    return curr;
+  }
+
+  int findPath(string label1, string label2) {
 
     Vertex* v1 = findVertex(label1);
     Vertex* v2 = findVertex(label2);
     if (v1 == nullptr or v2 == nullptr) { return; }
 
-    //Clear previous
-    for (Vertex* i : vertices) { i->distance = NULL; }
+    //Make unvisited set
+    vector<Vertex*> unvisited = this->vertices;
+    
+    for (Vertex* i : unvisited) {
 
-    v1->distance = 0;
-    vector<Vertex*> unvisited = vertices;
-    Vertex* curr = v1;
+      //Clear previous
+      if (i == v1) { i->distance = 0; }
+      else { i->distance = NULL; }
+    }
 
-    while (unvisited.size() != 0) {
+    while (unvisted.size() != 0 and !unreachable(unvisited)) {
 
-      //Find curr
-      if (curr == nullptr) {
+      Vertex* curr = getCurrent(unvisited);
 
-	curr = unvisited.at(0);
-	for (Vertex* i : unvisited) {
+      if (curr == v2) { return v2->distance; }
+      
+      //Edges starting at curr
+      for (Edge* i : curr->startEdges) {
 
-	  if (i->distance != NULL and i->distance < curr) { curr = i; }
-	}
+	if (curr->distance + i->weight < i->v2->distance) { i->v2->distance = curr->distance + i->weight; }
       }
 
-      //All null check
-      for (Vertex* i : unvisited) {
+      //Edges ending at curr
+      for (Edge* i : curr->endEdges) {
 
-	if (i->distance != NULL) { break; }
+	if (curr->distance + i->weight < i->v1->distance) { i->v1->distance = curr->distance + i->weight; }
+      }
+
+      unvisited.remove(curr);
+    }
+
+    return -1;
   }
 
   void printAdjacenyTable() {
 
-    for (Vertex* i : vertices) {
+    for (Vertex* i : this->vertices) {
 
       cout << "Vertex " << i->label << endl;
 
