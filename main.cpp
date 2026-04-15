@@ -12,7 +12,7 @@ int main() {
 
   while (running) {
 
-    cout << "What is your action? (ADD VERTEX, ADD EDGE, REMOVE VERTEX, REMOVE EDGE, FIND PATH, PRINT, or QUIT) ";
+    cout << "What is your action? (ADD VERTEX, ADD EDGE, REMOVE VERTEX, REMOVE EDGE, FIND PATH, PRINT, or QUIT) " << endl;
     string action;
     cin >> action;
 
@@ -22,9 +22,9 @@ int main() {
       string label;
       cin >> label;
 
-      cout << "Adding... ";
+      cout << "Adding... " << endl;
       graph->addVertex(label);
-      cout << "Done";
+      cout << "Done" << endl;
     }
     else if (action == "ADD EDGE" or action == "ae") {
 
@@ -40,9 +40,9 @@ int main() {
       int weight;
       cin >> weight;
 
-      cout << "Adding... ";
+      cout << "Adding... " << endl;
       graph->addEdge(vertex1, vertex2, weight);
-      cout << "Done";
+      cout << "Done" << endl;
     }
     else if (action == "REMOVE VERTEX" or action == "rv") {
 
@@ -50,9 +50,9 @@ int main() {
       string label;
       cin >> label;
 
-      cout << "Removing... ";
+      cout << "Removing... " << endl;
       graph->removeVertex(label);
-      cout << "Done";
+      cout << "Done" << endl;
     }
     else if (action == "REMOVE EDGE" or action == "re") {
 
@@ -66,7 +66,7 @@ int main() {
 
       cout << "Removing... ";
       graph->removeEdge(vertex1, vertex2);
-      cout << "Done";
+      cout << "Done" << endl;
     }
     else if (action == "FIND PATH" or action == "fp") {
 
@@ -78,15 +78,20 @@ int main() {
       string vertex2;
       cin >> vertex2;
 
-      cout << "Finding path... ";
+      cout << "Finding path... " << endl;
       graph->findPath(vertex1, vertex2);
-      cout << "Done";
+      cout << "Done" << endl;
     }
     else if (action == "PRINT" or action == "p") {
 
       cout << "Printing... " << endl;
       graph->printAdjacencyTable();
-      cout << "Done";
+      cout << "Done" << endl;
+    }
+    else if (action == "QUIT" or action == "q") {
+
+      delete graph;
+      running = false;
     }
     else { cout << endl << "Not an action" << endl; }
 
