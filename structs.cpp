@@ -41,10 +41,27 @@ struct Graph {
 
   ~Graph() { for (Vertex* i : vertices) { delete i; } }
 
-  Vertex* findVertex(string label) {
+  template <typename T>
+  T* findVertexFromLabel(vector<T*> vertices, string label) {
 
-    for (Vertex* i : vertices) {
+    for (T* i : vertices) {
       if (i->label == label) { return i; }
+    }
+
+    return nullptr;
+  }
+
+  template <typename T>
+  T* removeFromVector(vector<T*> &v, T* r) {
+
+    for (int i = 0; i < v.size(); i++) {
+
+      if (v.at(i) == r) {
+
+	T* toReturn = v.at(i);
+	v.erase(v.begin() + i);
+	return toReturn;
+      }
     }
 
     return nullptr;
@@ -54,8 +71,8 @@ struct Graph {
 
   void addEdge(string label1, string label2, int weight) {
 
-    Vertex* v1 = findVertex(label1);
-    Vertex* v2 = findVertex(label2);
+    Vertex* v1 = findVertexFromLabel(this->vertices, label1);
+    Vertex* v2 = findVertexFromLabel(this->vertices, label2);
 
     if (v1 == nullptr or v2 == nullptr) { return; }
 
@@ -65,32 +82,21 @@ struct Graph {
 
   void removeVertex(string label) {
 
-    for (Vertex* i : vertices) {
-
-      if (i->label == label) { delete i; }
-    }
-  }
-
-  void removeEdgeFromVertices(vector<Edge*> input, Edge* remove) {
-
-    for (int i = 0; i < input.size(); i++) {
-
-      if (input.at(i) == remove) { input.erase(input.begin() + i); }
-    }
+    delete removeFromVector(this->vertices, findVertexFromLabel(this->vertices, label));
   }
   
   void removeEdge(string label1, string label2) {
 
-    Vertex* v1 = findVertex(label1);
-    Vertex* v2 = findVertex(label2);
+    Vertex* v1 = findVertexFromLabel(this->vertices, label1);
+    Vertex* v2 = findVertexFromLabel(this->vertices, label2);
 
     //Starting at v1
     for (Edge* i : v1->startEdges) {
 
       if (i->vertex2 == v2) {
 
-	removeEdgeFromVertices(v1->startEdges, i);
-	removeEdgeFromVertices(v2->endEdges, i);
+	removeFromVector(v1->startEdges, i);
+	removeFromVector(v2->endEdges, i);
       }
 
       delete i;
@@ -101,8 +107,8 @@ struct Graph {
 
       if (i->vertex2 == v1) {
 
-	removeEdgeFromVertices(v2->startEdges, i);
-	removeEdgeFromVertices(v1->endEdges, i);
+	removeFromVector(v2->startEdges, i);
+	removeFromVector(v1->endEdges, i);
       }
 
       delete i;
@@ -132,8 +138,8 @@ struct Graph {
 
   int findPath(string label1, string label2) {
 
-    Vertex* v1 = findVertex(label1);
-    Vertex* v2 = findVertex(label2);
+    Vertex* v1 = findVertexFromLabel(this->vertices, label1);
+    Vertex* v2 = findVertexFromLabel(this->vertices, label2);
     if (v1 == nullptr or v2 == nullptr) { return -1; }
 
     //Make unvisited set
