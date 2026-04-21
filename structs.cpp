@@ -21,23 +21,16 @@ struct Edge {
 
 struct Vertex {
 
-  vector<Edge*> startEdges;
-  vector<Edge*> endEdges;
   string label;
   int distance = -1;
 
   Vertex(string l) : label(l) {}
-
-  ~Vertex() {
-
-    for (Edge* i : startEdges) { delete i; }
-    for (Edge* i : endEdges) { delete i; }
-  }
 };
 
 struct Graph {
 
   vector<Vertex*> vertices;
+  vector<Edge*> edges;
 
   ~Graph() { for (Vertex* i : vertices) { delete i; } }
 
@@ -71,48 +64,48 @@ struct Graph {
 
   void addEdge(string label1, string label2, int weight) {
 
-    Vertex* v1 = findVertexFromLabel(this->vertices, label1);
-    Vertex* v2 = findVertexFromLabel(this->vertices, label2);
+    Vertex* v1 = this->findVertexFromLabel(this->vertices, label1);
+    Vertex* v2 = this->findVertexFromLabel(this->vertices, label2);
 
     if (v1 == nullptr or v2 == nullptr) { return; }
 
-    v1->startEdges.push_back(new Edge(v1, v2, weight));
-    v2->endEdges.push_back(v1->startEdges.back());
+    this->edges.push_back(new Edge(v1, v2, weight));
   }
 
   void removeVertex(string label) {
 
-    delete removeFromVector(this->vertices, findVertexFromLabel(this->vertices, label));
+    Vertex* v = this->removeFromVector(this->vertices, findVertexFromLabel(this->vertices, label));
+
+    for (Edge* i : this->getEdges(v)) {
+
+      if (i->vertex1 == v or i->vertex2 == i) { this->removeFromVector(edges, i); }
+    }
   }
   
   void removeEdge(string label1, string label2) {
 
-    Vertex* v1 = findVertexFromLabel(this->vertices, label1);
-    Vertex* v2 = findVertexFromLabel(this->vertices, label2);
+    Vertex* v1 = this->findVertexFromLabel(this->vertices, label1);
+    Vertex* v2 = this->findVertexFromLabel(this->vertices, label2);
 
-    //Starting at v1
-    for (Edge* i : v1->startEdges) {
+    for (Edge* i : this->edges) {
 
-      if (i->vertex2 == v2) {
+      if (i->vertex1 == v1 and i->vertex2 == v2) {
 
-	removeFromVector(v1->startEdges, i);
-	removeFromVector(v2->endEdges, i);
+	this->removeFromVector(edges, i);
       }
+    }
+  }
 
-      delete i;
+  vector<Edge*> getEdges(Vertex* v) {
+
+    vector<Edge*> returnEdges;
+
+    for (Edge* i : this->edges) {
+
+      if (i->vertex1 == v or i->vertex2 == v) { returnEdges.push_back(i); }
     }
 
-    //Starting at v2
-    for (Edge* i : v2->startEdges) {
-
-      if (i->vertex2 == v1) {
-
-	removeFromVector(v2->startEdges, i);
-	removeFromVector(v1->endEdges, i);
-      }
-
-      delete i;
-    }
+    return returnEdges;
   }
 
   bool unreachable(vector<Vertex*> input) {
@@ -138,8 +131,8 @@ struct Graph {
 
   int findPath(string label1, string label2) {
 
-    Vertex* v1 = findVertexFromLabel(this->vertices, label1);
-    Vertex* v2 = findVertexFromLabel(this->vertices, label2);
+    Vertex* v1 = this->findVertexFromLabel(this->vertices, label1);
+    Vertex* v2 = this->findVertexFromLabel(this->vertices, label2);
     if (v1 == nullptr or v2 == nullptr) { return -1; }
 
     //Make unvisited set
@@ -154,20 +147,15 @@ struct Graph {
 
     while (unvisited.size() != 0 and !unreachable(unvisited)) {
 
-      Vertex* curr = getCurrent(unvisited);
+      Vertex* curr = this->getCurrent(unvisited);
 
       if (curr == v2) { return v2->distance; }
-      
-      //Edges starting at curr
-      for (Edge* i : curr->startEdges) {
 
-	if (curr->distance + i->weight < i->vertex2->distance) { i->vertex2->distance = curr->distance + i->weight; }
-      }
+      for (Edge* i : this->getEdges(curr)) {
 
-      //Edges ending at curr
-      for (Edge* i : curr->endEdges) {
-
-	if (curr->distance + i->weight < i->vertex1->distance) { i->vertex1->distance = curr->distance + i->weight; }
+	Vertex* other = i->vertex1 == curr ? i->vertex2 : i->vertex1;
+	
+	if (curr->distance + i->weight < other->distance) { other->distance = curr->distance + i->weight; }
       }
 
       //Delete curr
@@ -186,8 +174,13 @@ struct Graph {
 
       cout << "Vertex " << i->label << endl;
 
-      for (Edge* j : i->startEdges) { cout << "Edge to " << j->vertex2->label << " with weight " << j->weight << endl; }
-      for (Edge* j : i->endEdges) { cout << "Edge from " << j->vertex1->label << " with weight " << j->weight << endl; }
+      for (Edge* j : this->getEdges(i)) {
+
+	Vertex* other = j->vertex1 == i ? j->vertex2 : j->vertex1;
+	
+	cout << "Edge to " << other->label;
+	cout << " with weight " << j->weight << endl;
+      }
 
       cout << endl;
     }
