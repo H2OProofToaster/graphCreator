@@ -1,6 +1,7 @@
 #include "structs.cpp"
 #include <string>
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -12,7 +13,7 @@ int main() {
 
   while (running) {
 
-    cout << "What is your action? (ADD VERTEX, ADD EDGE, REMOVE VERTEX, REMOVE EDGE, FIND PATH, PRINT, or QUIT) " << endl;
+    cout << "What is your action? (ADD VERTEX, ADD EDGE, REMOVE VERTEX, REMOVE EDGE, READ, FIND PATH, PRINT, or QUIT) " << endl;
     string action;
     cin >> action;
 
@@ -68,6 +69,23 @@ int main() {
       graph->removeEdge(vertex1, vertex2);
       cout << "Done" << endl;
     }
+    else if (action == "READ" or action == "r") {
+
+      cout << "What file? ";
+
+      string fileName;
+      cin >> fileName;
+
+      if (fileName != "QUIT" or fileName != "q") {
+
+	cout << "Reading.." << endl;
+
+	ifstream readFile(fileName);
+
+	if (readfile.is_open()) {
+
+	}
+    }
     else if (action == "FIND PATH" or action == "fp") {
 
       cout << "What is the first vertex? ";
@@ -79,7 +97,7 @@ int main() {
       cin >> vertex2;
 
       cout << "Finding path... " << endl;
-      graph->findPath(vertex1, vertex2);
+      cout << graph->findPath(vertex1, vertex2);
       cout << "Done" << endl;
     }
     else if (action == "PRINT" or action == "p") {

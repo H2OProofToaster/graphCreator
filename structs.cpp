@@ -78,7 +78,11 @@ struct Graph {
 
     for (Edge* i : this->getEdges(v)) {
 
-      if (i->vertex1 == v or i->vertex2 == i) { this->removeFromVector(edges, i); }
+      if (i->vertex1 == v or i->vertex2 == v) {
+
+	this->removeFromVector(edges, i);
+	delete i;
+      }
     }
   }
   
@@ -92,6 +96,7 @@ struct Graph {
       if (i->vertex1 == v1 and i->vertex2 == v2) {
 
 	this->removeFromVector(edges, i);
+	delete i;
       }
     }
   }
