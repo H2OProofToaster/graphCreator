@@ -1,6 +1,7 @@
 #ifndef STRUCTS_CPP
 #define STRUCTS_CPP
 
+#include <limits>
 #include <iostream>
 #include <vector>
 #include <string>
@@ -23,6 +24,7 @@ struct Vertex {
 
   string label;
   int distance = -1;
+  Vertex* from = nullptr;
 
   Vertex(string l) : label(l) {}
 };
@@ -134,11 +136,11 @@ struct Graph {
     return curr;
   }
 
-  int findPath(string label1, string label2) {
+  void findPath(string label1, string label2) {
 
     Vertex* v1 = this->findVertexFromLabel(this->vertices, label1);
     Vertex* v2 = this->findVertexFromLabel(this->vertices, label2);
-    if (v1 == nullptr or v2 == nullptr) { return -1; }
+    if (v1 == nullptr or v2 == nullptr) { cout << -1; }
 
     //Make unvisited set
     vector<Vertex*> unvisited = this->vertices;
@@ -147,20 +149,41 @@ struct Graph {
 
       //Clear previous
       if (i == v1) { i->distance = 0; }
-      else { i->distance = -1; }
+      else { i->distance = numeric_limits<int>::max() / 2; }
     }
 
     while (unvisited.size() != 0 and !unreachable(unvisited)) {
 
+      //Returns smallest distance unvisited vertex
       Vertex* curr = this->getCurrent(unvisited);
 
-      if (curr == v2) { return v2->distance; }
+      if (curr == v2) {
+
+	cout << v2->distance << endl;
+
+	vector<Vertex*> path;
+	
+	while (curr->from != nullptr) {
+
+	  path.push_back(curr);
+	  curr = curr->from;
+	}
+
+	cout << "Path: ";
+	for (Vertex* i : path) { cout << i->label << " "; }
+	cout << endl;
+      }
 
       for (Edge* i : this->getEdges(curr)) {
 
 	Vertex* other = i->vertex1 == curr ? i->vertex2 : i->vertex1;
 	
-	if (curr->distance + i->weight < other->distance) { other->distance = curr->distance + i->weight; }
+	if (other != v1 and
+	    curr->distance + i->weight < other->distance) {
+
+	  other->distance = curr->distance + i->weight;
+	  other->from = curr;
+	}
       }
 
       //Delete curr
@@ -170,7 +193,7 @@ struct Graph {
       }
     }
 
-    return -1;
+    cout << -1;
   }
 
   void printAdjacencyTable() {

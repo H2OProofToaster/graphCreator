@@ -13,7 +13,7 @@ int main() {
 
   while (running) {
 
-    cout << "What is your action? (ADD VERTEX, ADD EDGE, REMOVE VERTEX, REMOVE EDGE, READ, FIND PATH, PRINT, or QUIT) " << endl;
+    cout << "What is your action? (ADD VERTEX, ADD EDGE, REMOVE VERTEX, REMOVE EDGE, SETUP, FIND PATH, PRINT, or QUIT) " << endl;
     string action;
     cin >> action;
 
@@ -69,22 +69,29 @@ int main() {
       graph->removeEdge(vertex1, vertex2);
       cout << "Done" << endl;
     }
-    else if (action == "READ" or action == "r") {
+    else if (action == "SETUP" or action == "s") {
 
-      cout << "What file? ";
+      cout << "Setting up..." << endl;
 
-      string fileName;
-      cin >> fileName;
+      //Setup vertices
+      graph->addVertex("v1");
+      graph->addVertex("v2");
+      graph->addVertex("v3");
+      graph->addVertex("v4");
+      graph->addVertex("v5");
+      graph->addVertex("v6");
+      graph->addVertex("v7");
 
-      if (fileName != "QUIT" or fileName != "q") {
-
-	cout << "Reading.." << endl;
-
-	ifstream readFile(fileName);
-
-	if (readfile.is_open()) {
-
-	}
+      //Setup edges
+      graph->addEdge("v1", "v2", 3);
+      graph->addEdge("v1", "v3", 3);
+      graph->addEdge("v1", "v4", 2);
+      graph->addEdge("v1", "v6", 5);
+      graph->addEdge("v2", "v5", 2);
+      graph->addEdge("v3", "v5", 6);
+      graph->addEdge("v4", "v6", 4);
+      graph->addEdge("v5", "v7", 8);
+      graph->addEdge("v6", "v7", 9);
     }
     else if (action == "FIND PATH" or action == "fp") {
 
@@ -97,7 +104,7 @@ int main() {
       cin >> vertex2;
 
       cout << "Finding path... " << endl;
-      cout << graph->findPath(vertex1, vertex2);
+      graph->findPath(vertex1, vertex2);
       cout << "Done" << endl;
     }
     else if (action == "PRINT" or action == "p") {
