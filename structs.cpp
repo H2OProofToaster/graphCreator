@@ -159,19 +159,16 @@ struct Graph {
 
       if (curr == v2) {
 
-	cout << v2->distance << endl;
-
-	vector<Vertex*> path;
+	cout << v2->distance << " with path: ";
 	
 	while (curr->from != nullptr) {
 
-	  path.push_back(curr);
+	  cout << curr->from->label << " ";
 	  curr = curr->from;
 	}
 
-	cout << "Path: ";
-	for (Vertex* i : path) { cout << i->label << " "; }
 	cout << endl;
+	return;
       }
 
       for (Edge* i : this->getEdges(curr)) {

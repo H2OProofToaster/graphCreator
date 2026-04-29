@@ -23,7 +23,7 @@ int main() {
       string label;
       cin >> label;
 
-      cout << "Adding... " << endl;
+      cout << "Adding... ";
       graph->addVertex(label);
       cout << "Done" << endl;
     }
@@ -41,7 +41,7 @@ int main() {
       int weight;
       cin >> weight;
 
-      cout << "Adding... " << endl;
+      cout << "Adding... ";
       graph->addEdge(vertex1, vertex2, weight);
       cout << "Done" << endl;
     }
@@ -51,7 +51,7 @@ int main() {
       string label;
       cin >> label;
 
-      cout << "Removing... " << endl;
+      cout << "Removing... ";
       graph->removeVertex(label);
       cout << "Done" << endl;
     }
@@ -71,7 +71,7 @@ int main() {
     }
     else if (action == "SETUP" or action == "s") {
 
-      cout << "Setting up..." << endl;
+      cout << "Setting up... ";
 
       //Setup vertices
       graph->addVertex("v1");
@@ -92,6 +92,9 @@ int main() {
       graph->addEdge("v4", "v6", 4);
       graph->addEdge("v5", "v7", 8);
       graph->addEdge("v6", "v7", 9);
+
+      cout << "Done" << endl;
+      graph->printAdjacencyTable();
     }
     else if (action == "FIND PATH" or action == "fp") {
 
