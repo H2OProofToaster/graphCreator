@@ -140,7 +140,8 @@ struct Graph {
 
     Vertex* v1 = this->findVertexFromLabel(this->vertices, label1);
     Vertex* v2 = this->findVertexFromLabel(this->vertices, label2);
-    if (v1 == nullptr or v2 == nullptr) { cout << -1; }
+    if (v1 == nullptr or v2 == nullptr) { cout << "That vertex doesn't exist"; return; }
+    if (v1 == v2) { cout << "Those vertices are the same"; return; }
 
     //Make unvisited set
     vector<Vertex*> unvisited = this->vertices;
@@ -190,7 +191,7 @@ struct Graph {
       }
     }
 
-    cout << -1;
+    cout << "There is no path";
   }
 
   void printAdjacencyTable() {
