@@ -13,11 +13,11 @@ int main() {
 
   while (running) {
 
-    cout << "What is your action? (ADD VERTEX, ADD EDGE, REMOVE VERTEX, REMOVE EDGE, SETUP, FIND PATH, PRINT, or QUIT) " << endl;
+    cout << "What is your action? (addVertex, addEdge, removeVertex, removeEdge, setup, findPath, print, or quit) " << endl;
     string action;
     cin >> action;
 
-    if (action == "ADD VERTEX" or action == "av") {
+    if (action == "addVertex" or action == "av") {
 
       cout << "What is the label? ";
       string label;
@@ -27,7 +27,7 @@ int main() {
       graph->addVertex(label);
       cout << "Done" << endl;
     }
-    else if (action == "ADD EDGE" or action == "ae") {
+    else if (action == "addEdge" or action == "ae") {
 
       cout << "What is the first vertex? ";
       string vertex1;
@@ -45,7 +45,7 @@ int main() {
       graph->addEdge(vertex1, vertex2, weight);
       cout << "Done" << endl;
     }
-    else if (action == "REMOVE VERTEX" or action == "rv") {
+    else if (action == "removeVertex" or action == "rv") {
 
       cout << "What is the label? ";
       string label;
@@ -55,7 +55,7 @@ int main() {
       graph->removeVertex(label);
       cout << "Done" << endl;
     }
-    else if (action == "REMOVE EDGE" or action == "re") {
+    else if (action == "removeEdge" or action == "re") {
 
       cout << "What is the first vertex? ";
       string vertex1;
@@ -69,7 +69,7 @@ int main() {
       graph->removeEdge(vertex1, vertex2);
       cout << "Done" << endl;
     }
-    else if (action == "SETUP" or action == "s") {
+    else if (action == "setup" or action == "s") {
 
       cout << "Setting up... ";
 
@@ -96,7 +96,7 @@ int main() {
       cout << "Done" << endl;
       graph->printAdjacencyTable();
     }
-    else if (action == "FIND PATH" or action == "fp") {
+    else if (action == "findPath" or action == "fp") {
 
       cout << "What is the first vertex? ";
       string vertex1;
@@ -110,13 +110,13 @@ int main() {
       graph->findPath(vertex1, vertex2);
       cout << "Done" << endl;
     }
-    else if (action == "PRINT" or action == "p") {
+    else if (action == "print" or action == "p") {
 
       cout << "Printing... " << endl;
       graph->printAdjacencyTable();
       cout << "Done" << endl;
     }
-    else if (action == "QUIT" or action == "q") {
+    else if (action == "quit" or action == "q") {
 
       delete graph;
       running = false;
