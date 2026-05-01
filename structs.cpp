@@ -119,7 +119,7 @@ struct Graph {
 
     for (Vertex* j : input) {
 
-      if (j->distance != -1) { return false; }
+      if (j->distance != numeric_limits<int>::max() / 2) { return false; }
     }
 
     return true;
@@ -140,8 +140,8 @@ struct Graph {
 
     Vertex* v1 = this->findVertexFromLabel(this->vertices, label1);
     Vertex* v2 = this->findVertexFromLabel(this->vertices, label2);
-    if (v1 == nullptr or v2 == nullptr) { cout << "That vertex doesn't exist"; return; }
-    if (v1 == v2) { cout << "Those vertices are the same"; return; }
+    if (v1 == nullptr or v2 == nullptr) { cout << "That vertex doesn't exist" << endl; return; }
+    if (v1 == v2) { cout << "Those vertices are the same" << endl; return; }
 
     //Make unvisited set
     vector<Vertex*> unvisited = this->vertices;
@@ -159,7 +159,7 @@ struct Graph {
       Vertex* curr = this->getCurrent(unvisited);
 
       if (curr == v2) {
-
+	
 	cout << v2->distance << " with path: ";
 	
 	while (curr->from != nullptr) {
@@ -191,7 +191,7 @@ struct Graph {
       }
     }
 
-    cout << "There is no path";
+    cout << "There is no path" << endl;
   }
 
   void printAdjacencyTable() {
